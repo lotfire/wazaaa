@@ -4,6 +4,7 @@ import createLogger from 'morgan'
 import csrfProtect from 'csurf'
 import express from 'express'
 import flash from 'connect-flash'
+import methodOverride from 'method-override'
 import mongoose from 'mongoose'
 import Path from 'path'
 
@@ -23,6 +24,7 @@ app.set('view engine', 'jade')
 
 app.use(express.static(publicPath))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride((req) => req.body._method))
 
 if (app.get('env') !== 'test') {
   app.use(createLogger(app.get('env') === 'development' ? 'dev' : 'combined'))
