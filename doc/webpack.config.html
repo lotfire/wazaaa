@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><title>webpack.config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="webpack.config"><meta name="groc-project-path" content="webpack.config.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">webpack.config.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="configuration-webpack">Configuration Webpack</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> autoprefixer = <span class="hljs-built_in">require</span>(<span class="hljs-string">'autoprefixer'</span>)
+<span class="hljs-keyword">var</span> ExtractTextPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">'extract-text-webpack-plugin'</span>)
+<span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>)
+<span class="hljs-keyword">var</span> Path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>)
+<span class="hljs-keyword">var</span> rimraf = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rimraf'</span>)
+<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">'webpack'</span>)
+
+<span class="hljs-keyword">var</span> inProduction = process.env.NODE_ENV === <span class="hljs-string">'production'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="dossier-de-sortie">Dossier de sortie</h2>
+<p>Le dossier de sortie est ici <code>public</code>, au même niveau que ce
+fichier de configuration (dans le même répertoire).var inProduction = process.env.NODE_ENV === &#39;production&#39;</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> outputFolder = Path.resolve(__dirname, <span class="hljs-string">'public'</span>)
+
+<span class="hljs-keyword">if</span> (fs.existsSync(outputFolder)) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>S’il existe, on vire d’abord tout son contenu, pour repartir
+de frais et ne pas y laisser des trucs obsolète</p></div></div><div class="code"><div class="wrapper">  rimraf.sync(outputFolder + <span class="hljs-string">'/**'</span>)
+} <span class="hljs-keyword">else</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Sinon, on le crée à la volée</p></div></div><div class="code"><div class="wrapper">  fs.mkdirSync(outputFolder)
+}
+
+
+<span class="hljs-built_in">module</span>.exports = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="points-dentre">Points d’entrée</h2>
+<p>Les &quot;sommets&quot; de l’arborescence de dépendances de l’appli.
+En d’autre termes, les points d’entrée de l’application.</p>
+<p>On a ici une seule entry (même si c’est un tableau), donc un seul
+<em>bundle</em> en sortie.  Mais <code>entry</code> pourrait être un objet dont les
+clés seraient les noms de bundles, et les valeurs les descriptifs
+de contenus.</p></div></div><div class="code"><div class="wrapper">  entry: {
+    app: [</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On a besoin du polyfill de Babel pour la gestion des fonctions <code>async</code>,
+pour <code>Object.assign</code> et <code>Array.prototype.includes</code>, etc.,
+vu qu&#39;on prend en charge des navigateurs variés…</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-string">'babel-polyfill'</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Le point d’entrée de notre application proprement dite.</p></div></div><div class="code"><div class="wrapper">      Path.resolve(__dirname, <span class="hljs-string">'src/client/application.js'</span>)
+    ]
+  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="fichiers-en-sortie">Fichiers en sortie</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">  output: {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Le chemin de base pour les fichiers (bundles, etc.) à produire
+lors d’un <em>build</em>.</p></div></div><div class="code"><div class="wrapper">    path: outputFolder,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>L’URL publique associée à ce chemin sur le disque, ce qui permet
+d’ajuster les URLs produites en interne par Webpack.  Ici, la
+racine du domaine.</p></div></div><div class="code"><div class="wrapper">    publicPath: <span class="hljs-string">'/'</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Le nom du bundle (ou si on a plusieurs bundles,
+le schéma de nommage).</p></div></div><div class="code"><div class="wrapper">    filename: <span class="hljs-string">'[name].js'</span>
+  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="plugins">Plugins</h2>
+<p>Les plugins indiquent des ajustements au traitement de fichiers
+par Webpack, le plus souvent <em>a posteriori</em> mais parfois au fil
+des transformations.</p></div></div><div class="code"><div class="wrapper">  plugins: [</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Production de bundles à part pour certains types de fichiers.
+Ici, on indique un bundle cible unique (<code>allChunks: true</code>) qu’on
+appellera <code>app.css</code>.  Il restera à indiquer aux chargeurs de
+syntaxe CSS qu’on veut les faire aboutir vers ce <em>bundle</em>, ce que
+nous verrons plus bas.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">new</span> ExtractTextPlugin({
+      filename: <span class="hljs-string">'[name].css'</span>,
+      allChunks: <span class="hljs-literal">true</span>
+    }),</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Extraction automatique des modules npm dans un bundle à part, <code>vendor.js</code>.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin({
+      name: <span class="hljs-string">'vendor'</span>,
+      minChunks: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">module</span>) </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>.context &amp;&amp; <span class="hljs-built_in">module</span>.context.indexOf(<span class="hljs-string">'node_modules'</span>) !== -<span class="hljs-number">1</span>
+      }
+    }),</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Configuration PostCSS : on utilisera ici un traitement <a href="https://github.com/postcss/autoprefixer#readme">Autoprefixer</a>
+par défaut, parce qu’on n’est plus en 2010…</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">new</span> webpack.LoaderOptionsPlugin({
+      minimize: inProduction,
+      debug: !inProduction,
+      options: {
+        postcss: [autoprefixer()]
+      }
+    })
+  ],
+  <span class="hljs-built_in">module</span>: {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chargeurs-de-syntaxe">Chargeurs de syntaxe</h2>
+<p>C’est le cœur de Webpack: les chargeurs de syntaxe qui nous
+permettent, depuis notre JS, de déclarer nos dépendances à des
+<em>assets</em> quelconques (CSS, images, fontes…) via les mécanismes
+habituels d’<code>import</code>/<code>require</code>.</p></div></div><div class="code"><div class="wrapper">    rules: [
+      {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Toute dépendance aboutissant à un fichier <code>.js</code> sera
+d’abord «moulinée» par Babel.  En revanche, on fout la paix au
+contenu de <code>node_modules</code>, qui n’a pas vocation à être
+transpilé.</p></div></div><div class="code"><div class="wrapper">        test: <span class="hljs-regexp">/\.js$/</span>,
+        exclude: <span class="hljs-regexp">/node_modules/</span>,
+        use: { loader: <span class="hljs-string">'babel-loader'</span> }
+      },
+      {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Toute dépendance CSS pure (<code>.css</code>) passera par la trinité
+classique: PostCSS pour l’auto-préfixage et autres
+<em>post-processings</em>, CSS pour la transformation en objets
+descriptifs et Style pour l’injection live dans la page.
+Notez que dans une chaîne de <em>loaders</em> exprimée comme ça
+(<code>String</code> avec des <code>!</code> en séparateurs), les <em>loaders</em> sont
+en fait exploités de droite à gauche.</p></div></div><div class="code"><div class="wrapper">        test: <span class="hljs-regexp">/\.css$/</span>,
+        use: ExtractTextPlugin.extract({
+          fallback: <span class="hljs-string">'style-loader'</span>,
+          use: [<span class="hljs-string">'css-loader'</span>, <span class="hljs-string">'postcss-loader'</span>]
+        })
+      },
+      {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Nos propres styles sont en <a href="http://stylus-lang.com/">Stylus</a>,
+donc on utilise la même chaîne de traitement que pour les
+CSS pures, mais avec la transpilation Stylus -&gt; CSS d’abord.</p></div></div><div class="code"><div class="wrapper">        test: <span class="hljs-regexp">/\.styl$/</span>,
+        use: ExtractTextPlugin.extract({
+          fallback: <span class="hljs-string">'style-loader'</span>,
+          use: [<span class="hljs-string">'css-loader'</span>, <span class="hljs-string">'postcss-loader'</span>, <span class="hljs-string">'stylus-loader'</span>]
+        })
+      },
+      {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On ré-utilise des templates Jade communs avec le back, mais
+hors de question de payer le prix d&#39;une interprétation initiale
+à chaque fois : ce chargeur pré-compile le template et nous fournit
+une fonction prête à l&#39;emploi, qui reçoit les « locals » en
+arguments et renvoie le HTML produit.</p></div></div><div class="code"><div class="wrapper">        test: <span class="hljs-regexp">/\.jade$/</span>,
+        use: { loader: <span class="hljs-string">'jade-loader'</span> }
+      },
+      {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On a recours à plusieurs images et fontes, on utilisera donc le
+URL Loader, une spécialisation du File Loader.  Ici, si
+le fichier pèse moins de 10000 octets, il produira une URL
+<em>inline</em> (&quot;Data URI&quot;), économisant ainsi une requête réseau
+côté client.  Dans le cas contraire, il produira bien une
+URL normale vers un fichier.</p></div></div><div class="code"><div class="wrapper">        test: <span class="hljs-regexp">/\.(jpe?g|png|gif|svg|woff2?|eot|ttf)$/</span>,
+        use: { loader: <span class="hljs-string">'url-loader'</span>, options: { limit: <span class="hljs-number">10000</span> } }
+      }
+    ]
+  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="source-maps">Source Maps</h2>
+<p>Webpack nous propose une bonne demi-douzaine de types de
+<a href="https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/">source maps</a>
+pour nos fichiers transpilés et le bundle final, mais seules
+certaines garantissent le bon fonctionnement des points
+d’arrêt dans Chrome.  On utilise ici celle qui, parmi les «bonnes»,
+est créée le plus vite par Webpack.</p></div></div><div class="code"><div class="wrapper">  devtool: inProduction ? <span class="hljs-string">'source-map'</span> : <span class="hljs-string">'inline-source-map'</span>
+}</div></div></div></div></body></html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="en"><head><title>views/entries/new</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="views/entries/new"><meta name="groc-project-path" content="src/views/entries/new.jade"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/views/entries/new.jade</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="saisie-d39un-nouveau-bookmark">Saisie d&#39;un nouveau bookmark</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper">extend ../_layout
+block content
+  h1= pageTitle
+
+  <span class="hljs-keyword">form</span>(method=<span class="hljs-string">"post"</span> action=<span class="hljs-string">"/entries"</span>)
+    <span class="hljs-keyword">input</span>(<span class="hljs-keyword">type</span>=<span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"_csrf"</span> value=csrfToken)
+    .<span class="hljs-keyword">form</span>-<span class="hljs-literal">group</span>
+      <span class="hljs-keyword">label</span>(<span class="hljs-keyword">for</span>=<span class="hljs-string">"edtURL"</span>) URL
+      <span class="hljs-keyword">input</span>#edtURL.<span class="hljs-keyword">form</span>-control(name=<span class="hljs-string">"url"</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"url"</span> placeholder=<span class="hljs-string">"http://…"</span> autofocus required)
+    .<span class="hljs-keyword">form</span>-<span class="hljs-literal">group</span>
+      <span class="hljs-keyword">label</span>(<span class="hljs-keyword">for</span>=<span class="hljs-string">"edtTags"</span>) Tags
+      +tagField('edtTags')
+    p
+      button.btn.btn-primary(<span class="hljs-keyword">type</span>=<span class="hljs-string">"submit"</span>)
+        i.glyphicon.glyphicon-plus
+        |  Ajouter</div></div></div></div></body></html>

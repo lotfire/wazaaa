@@ -1,0 +1,12 @@
+{
+  "glob": [
+    "src/**/*.js",
+    "test/**/*.js",
+    "src/**/*.jade",
+
+    "webpack.config.js",
+    "nodemon.json"
+  ],
+  "github": false,
+  "strip": "src"
+}

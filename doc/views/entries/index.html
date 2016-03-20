@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><title>views/entries/index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="views/entries/index"><meta name="groc-project-path" content="src/views/entries/index.jade"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/views/entries/index.jade</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="listing-des-bookmarks">Listing des bookmarks</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-label">extend</span> ../_layout
+<span class="hljs-keyword">block </span>content
+  h1= pageTitle
+
+  <span class="hljs-preprocessor">if</span> entryCount &gt; <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Le helper <code>pluralize</code> est mis à disposition des vues par notre
+injection du module correspondant dans <code>app.locals</code> depuis <code>server.js</code>.</p></div></div><div class="code"><div class="wrapper">    .lead= pluralize(entries.length, <span class="hljs-keyword">query</span>.tags ? 'résultat' : 'bookmark')
+
+    <span class="hljs-keyword">form</span>.<span class="hljs-keyword">form</span>-inline.row(role=<span class="hljs-string">"form"</span>)
+      .<span class="hljs-keyword">form</span>-group.col-sm-3
+        <span class="hljs-keyword">label</span>.sr-only(<span class="hljs-keyword">for</span>=<span class="hljs-string">"tagList"</span>) Tags
+        +tagField('tagList')
+      .checkbox
+        <span class="hljs-keyword">label</span>
+          <span class="hljs-keyword">input</span>(<span class="hljs-keyword">type</span>=<span class="hljs-string">"checkbox"</span> name=<span class="hljs-string">"tagMode"</span> value=<span class="hljs-string">"any"</span> checked=(<span class="hljs-keyword">query</span>.tagMode === 'any'))
+          |  pas forcément tous  
+      button.btn.btn-primary(<span class="hljs-keyword">type</span>=<span class="hljs-string">"submit"</span>)
+        i.glyphicon.glyphicon-filter
+        |  Filtrer
+
+    hr
+    p
+      a.btn.btn-primary(href=<span class="hljs-string">"/entries/new"</span>)
+        i.glyphicon.glyphicon-plus
+        |  Ajoutez-<span class="hljs-keyword">en</span> un !
+
+
+    <span class="hljs-keyword">if</span> entries.length === 0
+      p Aucun bookmark ne correspond à votre recherche.
+  <span class="hljs-keyword">else</span>
+    .alert.alert-info
+      p <span class="hljs-keyword">D</span>ésolés, aucun bookmark pour le moment…
+      p
+        a.btn.btn-primary(href=<span class="hljs-string">"/entries/new"</span>)
+          i.glyphicon.glyphicon-plus
+          |  Faites le premier !
+
+  <span class="hljs-keyword">table</span>#entries.<span class="hljs-keyword">table</span>.<span class="hljs-keyword">table</span>-striped.<span class="hljs-keyword">table</span>-hover
+    tbody
+      each entry <span class="hljs-keyword">in</span> entries</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>La vue Jade inclue ici est un « partial »partagé avec le côté client</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-preprocessor">include</span> ../../<span class="hljs-preprocessor">common</span>/views/<span class="hljs-preprocessor">entry</span></div></div></div></div></body></html>

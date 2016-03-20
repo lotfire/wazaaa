@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><title>views/entries/show</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="views/entries/show"><meta name="groc-project-path" content="src/views/entries/show.jade"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/views/entries/show.jade</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="affichage-d39un-bookmark">Affichage d&#39;un bookmark</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper">extend ../_layout
+block content
+  h1
+    = pageTitle
+    <span class="hljs-keyword">if</span> entry.<span class="hljs-keyword">score</span> !== 0
+      small.<span class="hljs-keyword">score</span>  • <span class="hljs-keyword">Score</span> : #{entry.<span class="hljs-keyword">score</span>}
+
+  p.text-muted
+    a(href=entry.url target=<span class="hljs-string">"_blank"</span>)= entry.url
+    each tag <span class="hljs-keyword">in</span> entry.tags
+      | &amp;#32;
+      span.<span class="hljs-keyword">label</span>.<span class="hljs-keyword">label</span>-info= tag
+
+  p <span class="hljs-keyword">Post</span>é par #{(entry.poster || {}).name} #{formatDate(entry)}
+
+  blockquote= entry.excerpt
+
+  unless entry.votedBy &amp;&amp; entry.votedBy(user)
+    .clearfix
+      each offset <span class="hljs-keyword">in</span> ['up', 'down']
+        <span class="hljs-keyword">form</span>.<span class="hljs-keyword">form</span>-inline.pull-left(action=<span class="hljs-string">"/entries/#{entry.id}/#{offset}vote"</span> method=<span class="hljs-string">"post"</span>)
+          <span class="hljs-keyword">input</span>(<span class="hljs-keyword">type</span>=<span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"_method"</span> value=<span class="hljs-string">"patch"</span>)
+          <span class="hljs-keyword">input</span>(<span class="hljs-keyword">type</span>=<span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"_csrf"</span> value=csrfToken)
+          button.btn(<span class="hljs-keyword">class</span>=('up' === offset ? 'btn-success' : 'btn-danger') <span class="hljs-keyword">type</span>=<span class="hljs-string">"submit"</span>)
+            i.glyphicon(<span class="hljs-keyword">class</span>=<span class="hljs-string">"glyphicon-thumbs-#{offset}"</span>)
+            |  #{offset}vote
+          | &amp;nbsp;
+
+  fieldset#comments
+    legend Commentaires
+
+    unless entry.comments.<span class="hljs-literal">length</span>
+      p.text-muted Aucun commentaire pour le moment…
+
+    ul.<span class="hljs-keyword">list</span>-unstyled
+      each comment <span class="hljs-keyword">in</span> entry.comments
+        <span class="hljs-keyword">li</span>(id=<span class="hljs-string">"comment#{comment.id}"</span>)
+          blockquote
+            = comment.text
+            small <span class="hljs-keyword">Post</span>é par #{(comment.author || {}).name} #{formatDate(comment)}
+
+
+    <span class="hljs-keyword">form</span>(method=<span class="hljs-string">"post"</span> action=<span class="hljs-string">"/entries/#{entry.id}/comments"</span>)
+      <span class="hljs-keyword">input</span>(<span class="hljs-keyword">type</span>=<span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"_csrf"</span> value=csrfToken)
+      .<span class="hljs-keyword">form</span>-<span class="hljs-literal">group</span>
+        <span class="hljs-keyword">label</span>(<span class="hljs-keyword">for</span>=<span class="hljs-string">"taComment"</span>) Votre commentaire
+        textarea#taComment.<span class="hljs-keyword">form</span>-control(name=<span class="hljs-string">"text"</span> rows=<span class="hljs-string">"3"</span> required placeholder=<span class="hljs-string">"Une pensée profonde et originale…"</span>)
+      button.btn.btn-primary(<span class="hljs-keyword">type</span>=<span class="hljs-string">"submit"</span>)
+        i.glyphicon.glyphicon-plus
+        |  Ajouter votre commentaire !</div></div></div></div></body></html>

@@ -1,0 +1,11 @@
+<!DOCTYPE html><html lang="en"><head><title>views/_flashes</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="views/_flashes"><meta name="groc-project-path" content="src/views/_flashes.jade"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/views/_flashes.jade</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="affichage-des-messages-temporaires">Affichage des messages temporaires</h1>
+<p>Petit &quot;partial&quot; sorti du layout pour des raison de découpage et de modularité,
+qui affiche une UI approprié pour chaque niveau de flash (message temporaire) détecté.</p>
+<p>La variable <code>flash</code> est accessible aux vues grâce à notre petit middleware correspondant
+dans <code>server.js</code>.</p>
+<p>Pour des raisons de CSS, on convertit le type <code>error</code> en <code>danger</code> afin de correspondre aux
+codes attendus par Bootstrap (<code>success</code>, <code>info</code>, <code>warning</code>… ont des classes CSS homonymes).</p></div></div><div class="code"><div class="wrapper">each messages, kind <span class="hljs-keyword">in</span> flash
+  - <span class="hljs-keyword">if</span> (<span class="hljs-string">'error'</span> === kind) kind = <span class="hljs-string">'danger'</span>
+  .alert(<span class="hljs-keyword">class</span>=<span class="hljs-string">"alert-#{kind}"</span>)
+    each message <span class="hljs-keyword">in</span> messages
+      p= message</div></div></div></div></body></html>
