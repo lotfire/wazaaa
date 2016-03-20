@@ -3,6 +3,7 @@ import cookieSession from 'cookie-session'
 import createLogger from 'morgan'
 import csrfProtect from 'csurf'
 import express from 'express'
+import flash from 'connect-flash'
 import Path from 'path'
 
 import 'colors'
@@ -25,6 +26,7 @@ if (app.get('env') !== 'test') {
 
 app.use(cookieSession({ name: 'wazaaa:session', secret: 'Node.js c’est de la balle !' }))
 app.use(csrfProtect())
+app.use(flash())
 
 app.locals.title = 'Wazaaa'
 
@@ -34,7 +36,7 @@ if (app.get('env') === 'development') {
 
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken()
-  res.locals.flash = []
+  res.locals.flash = req.flash()
   res.locals.query = req.query
   res.locals.url = req.url
   next()

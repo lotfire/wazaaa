@@ -14,6 +14,8 @@
     "dev:client": "webpack --progress --watch",
     "dev:test": "npm test -- --watch",
     "doc": "rimraf doc && groc",
+    "fixtures": "mongo wazaaa mongo-scripts/*",
+    "fixtures:win": "mongo.exe wazaaa mongo-scripts\\entries.js mongo-scripts\\users.js",
     "lint": "standard --verbose | snazzy",
     "postinstall": "npm run build",
     "start": "node src/boot.js",
