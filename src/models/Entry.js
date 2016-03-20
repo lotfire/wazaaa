@@ -40,6 +40,15 @@ Object.assign(entrySchema.statics, {
   post (fields) {
     fields.tags = normalizeTags(fields.tags)
     return this.create(fields)
+  },
+
+  tags () {
+    return this.aggregate(
+      { $project: { tags: 1 } },
+      { $unwind: '$tags' },
+      { $group: { _id: '$tags', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ).then((tuples) => tuples.map(({ _id }) => _id))
   }
 })
 

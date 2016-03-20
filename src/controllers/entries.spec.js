@@ -48,6 +48,7 @@ describe('Entries controller', () => {
     it('should route to listing on authenticated `/entries`', () => {
       sandbox.stub(Entry, 'getEntries').returns(Promise.resolve([]))
       sandbox.stub(Entry, 'count').returns(Promise.resolve(0))
+      sandbox.stub(Entry, 'tags').returns(Promise.resolve([]))
 
       return request(app)
         .get('/entries')
@@ -56,6 +57,8 @@ describe('Entries controller', () => {
     })
 
     it('should render the entry creation form on `/entries/new`', () => {
+      sandbox.stub(Entry, 'tags').returns(Promise.resolve([]))
+
       return request(app)
         .get('/entries/new')
         .expect(200)

@@ -61,11 +61,12 @@ function downvoteEntry (req, res) {
 
 async function listEntries (req, res) {
   try {
-    const [entryCount, entries] = await Promise.all([
+    const [tags, entryCount, entries] = await Promise.all([
+      Entry.tags(),
       Entry.count(),
       Entry.getEntries(req.query)
     ])
-    res.render('entries/index', { pageTitle: 'Les bookmarks', entries, entryCount })
+    res.render('entries/index', { pageTitle: 'Les bookmarks', entries, entryCount, tags })
   } catch (err) {
     req.flash('error', `Impossible d’afficher les bookmarks : ${err.message}`)
     res.redirect('/')
@@ -93,8 +94,9 @@ async function loadAndVerifyEntry (req, res, next) {
   }
 }
 
-function newEntry (req, res) {
-  res.render('entries/new', { pageTitle: 'Nouveau bookmark' })
+async function newEntry (req, res) {
+  const tags = await Entry.tags()
+  res.render('entries/new', { pageTitle: 'Nouveau bookmark', tags })
 }
 
 function requireAuthentication (req, res, next) {
