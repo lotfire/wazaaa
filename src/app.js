@@ -6,6 +6,7 @@ import express from 'express'
 import flash from 'connect-flash'
 import methodOverride from 'method-override'
 import mongoose from 'mongoose'
+import passport from 'passport'
 import Path from 'path'
 
 mongoose.Promise = Promise
@@ -15,6 +16,7 @@ import 'colors'
 import entriesController from './controllers/entries'
 import mainController from './controllers/main'
 import populateHelpers from './common/helpers'
+import usersController from './controllers/users'
 
 const app = express()
 const publicPath = Path.resolve(__dirname, '../public')
@@ -33,6 +35,8 @@ if (app.get('env') !== 'test') {
 app.use(cookieSession({ name: 'wazaaa:session', secret: 'Node.js c’est de la balle !' }))
 app.use(csrfProtect())
 app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.locals.title = 'Wazaaa'
 populateHelpers(app.locals)
@@ -41,18 +45,17 @@ if (app.get('env') === 'development') {
   app.locals.pretty = true
 }
 
-import User from './models/User'
-
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken()
   res.locals.flash = req.flash()
   res.locals.query = req.query
   res.locals.url = req.url
-  res.locals.user = req.user = await User.findOne()
+  res.locals.user = req.user
   next()
 })
 
 app.use(mainController)
 app.use('/entries', entriesController)
+app.use('/users', usersController)
 
 export default app
