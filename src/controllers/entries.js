@@ -10,11 +10,14 @@ router.patch('/:id/downvote', downvoteEntry)
 router.patch('/:id/upvote', upvoteEntry)
 router.post('/:id/comments', commentEntry)
 
+export default router
+
 function commentEntry (req, res) {
   res.send('COMING SOON')
 }
 
 function createEntry (req, res) {
+  console.log(req.body)
   res.send('COMING SOON')
 }
 
@@ -37,5 +40,3 @@ function showEntry (req, res) {
 function upvoteEntry (req, res) {
   res.send('COMING SOON')
 }
-
-export default router
