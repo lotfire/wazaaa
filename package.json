@@ -1,0 +1,112 @@
+{
+  "name": "wazaaa",
+  "version": "1.0.0",
+  "description": "Demo app used in Delicious Insights’ Node.js training course",
+  "private": true,
+  "engines": {
+    "node": ">= 6",
+    "npm": ">= 4"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress",
+    "dev:debug": "nodemon --inspect src/boot.js",
+    "dev:server": "nodemon src/boot.js",
+    "dev:client": "webpack --progress --watch",
+    "dev:test": "npm test -- --watch",
+    "doc": "rimraf doc && groc",
+    "lint": "standard --verbose | snazzy",
+    "postinstall": "npm run build",
+    "start": "node src/boot.js",
+    "test": "cross-env NODE_ENV=test jest",
+    "test:cov": "npm test -- --coverage"
+  },
+  "babel": {
+    "presets": [
+      "latest-minimal",
+      "stage-3"
+    ]
+  },
+  "standard": {
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "parser": "babel-eslint",
+    "ignore": [
+      "/doc/"
+    ]
+  },
+  "keywords": [
+    "node",
+    "express",
+    "connect",
+    "passport",
+    "social",
+    "demo",
+    "training",
+    "jade",
+    "webpack",
+    "mocha",
+    "tests"
+  ],
+  "author": "Christophe Porteneuve <christophe@delicious-insights.com> (http://delicious-insights.com)",
+  "license": "No-License (see LICENSE file)",
+  "dependencies": {
+    "autoprefixer": "^7.1.1",
+    "babel-core": "^6.24.0",
+    "babel-loader": "^7.0.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-latest-minimal": "^1.1.2",
+    "babel-preset-stage-3": "^6.22.0",
+    "body-parser": "^1.17.1",
+    "bootstrap": "^3.3.6",
+    "colors": "^1.0.3",
+    "connect-flash": "^0.1.1",
+    "cookie-session": "^2.0.0-beta.1",
+    "cross-env": "^5.0.0",
+    "css-loader": "^0.28.2",
+    "csurf": "^1.9.0",
+    "errorhandler": "^1.5.0",
+    "express": "^4.15.2",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
+    "isomorphic-fetch": "^2.2.1",
+    "jade": "^1.8.1",
+    "jade-loader": "^0.8.0",
+    "jquery": "^3.2.1",
+    "method-override": "^2.3.8",
+    "moment": "^2.18.1",
+    "mongoose": "^4.9.2",
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-twitter": "^1.0.2",
+    "postcss-loader": "1",
+    "rimraf": "^2.6.1",
+    "select2": "^3.5.2-browserify",
+    "socket.io": "^2.0.1",
+    "style-loader": "^0.18.1",
+    "stylus": "^0.54.2",
+    "stylus-loader": "^3.0.1",
+    "underscore": "^1.7.0",
+    "unfluff": "^1.0.0",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.6.0",
+    "webpack-dashboard": "^0.4.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.1",
+    "bson-objectid": "^1.1.5",
+    "chai": "^3.5.0",
+    "faker": "^4.1.0",
+    "groc": "^0.8.0",
+    "jest": "^20.0.3",
+    "nock": "^9.0.10",
+    "nodemon": "^1.9.1",
+    "sinon": "^2.1.0",
+    "sinon-chai": "^2.9.0",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.2",
+    "supertest": "^3.0.0"
+  }
+}
