@@ -4,12 +4,16 @@ import createLogger from 'morgan'
 import csrfProtect from 'csurf'
 import express from 'express'
 import flash from 'connect-flash'
+import mongoose from 'mongoose'
 import Path from 'path'
+
+mongoose.Promise = Promise
 
 import 'colors'
 
 import entriesController from './controllers/entries'
 import mainController from './controllers/main'
+import populateHelpers from './common/helpers'
 
 const app = express()
 const publicPath = Path.resolve(__dirname, '../public')
@@ -29,6 +33,7 @@ app.use(csrfProtect())
 app.use(flash())
 
 app.locals.title = 'Wazaaa'
+populateHelpers(app.locals)
 
 if (app.get('env') === 'development') {
   app.locals.pretty = true
