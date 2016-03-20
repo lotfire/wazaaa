@@ -1,9 +1,14 @@
 import { createServer } from 'http'
 import app from './app'
+import dbConnect from './models/connection'
 
-app.set('port', process.env.PORT || 3000)
+dbConnect(() => {
+  console.log('✔ Connection established to mongoDB database'.green)
 
-const server = createServer(app)
-server.listen(app.get('port'), () => {
-  console.log('✔ Server listening on port'.green, String(app.get('port')).cyan)
+  app.set('port', process.env.PORT || 3000)
+
+  const server = createServer(app)
+  server.listen(app.get('port'), () => {
+    console.log('✔ Server listening on port'.green, String(app.get('port')).cyan)
+  })
 })
