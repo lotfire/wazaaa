@@ -39,11 +39,14 @@ if (app.get('env') === 'development') {
   app.locals.pretty = true
 }
 
-app.use((req, res, next) => {
+import User from './models/User'
+
+app.use(async (req, res, next) => {
   res.locals.csrfToken = req.csrfToken()
   res.locals.flash = req.flash()
   res.locals.query = req.query
   res.locals.url = req.url
+  res.locals.user = req.user = await User.findOne()
   next()
 })
 
