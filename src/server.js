@@ -1,11 +1,27 @@
+import createLogger from 'morgan'
 import { createServer } from 'http'
+import express from 'express'
+import Path from 'path'
 
 import 'colors'
 
-const server = createServer((req, res) => {
-  res.end('WAZAAA!')
-})
+const app = express()
+const server = createServer(app)
 
-server.listen(3000, () => {
-  console.log('✔ Server listening on port'.green, String(3000).cyan)
+app.set('port', process.env.PORT || 3000)
+app.set('views', Path.resolve(__dirname, 'views'))
+app.set('view engine', 'jade')
+
+app.use(createLogger(app.get('env') === 'development' ? 'dev' : 'combined'))
+
+app.locals.title = 'Wazaaa'
+
+if (app.get('env') === 'development') {
+  app.locals.pretty = true
+}
+
+app.get('/', (req, res) => res.render('home'))
+
+server.listen(app.get('port'), () => {
+  console.log('✔ Server listening on port'.green, String(app.get('port')).cyan)
 })
